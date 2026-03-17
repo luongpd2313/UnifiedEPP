@@ -71,8 +71,58 @@ Once the alert is triggered, **Active Response** is executed automatically:
 
 ---
 
-### 🖼️ Demo
-
-**1. Reverse shell execution**: 
+### 🖼️ Demo: 
 [Watch Full Demo](https://drive.google.com/file/d/1HJznsLTW11QqCWwRigrPFWWUI_gj3wQs/view?usp=sharing)
 
+---
+
+## 🔴 Scenario 2: Lateral Movement via SSH Agent Hijacking
+
+### 🧪 Attack
+This scenario simulates **SSH Agent Hijacking**, where an attacker abuses **SSH Agent Forwarding (`ssh -A`)** to move laterally across the network.
+
+In a typical workflow:
+- A legitimate user connects from their local machine → Jump Box → internal servers (Server Farm)
+- Authentication is handled via **SSH Agent Forwarding**, without re-entering credentials
+
+However, this introduces a security risk:
+- The forwarded agent is exposed via the `SSH_AUTH_SOCK` environment variable
+- If the attacker compromises the Jump Box, they can:
+  - Access `SSH_AUTH_SOCK`
+  - Reuse the victim’s SSH agent
+  - Authenticate to internal servers **without the private key**
+
+---
+
+### 🖥️ Environment Setup
+
+| Machine | IP Address | User |
+|--------|-----------|------|
+| Jump Box | 192.168.49.140 | jumpbox |
+| User Machine | 192.168.49.138 | nt1208 |
+| Server Farm | 172.19.192.36 | server |
+
+---
+
+### 🔍 Detection
+- Wazuh monitors SSH activities and session behavior
+- Suspicious indicators:
+  - SSH sessions initiated without normal authentication flow
+  - Abuse of `SSH_AUTH_SOCK` environment variable
+  - Unusual access pattern from Jump Box to internal servers
+- Logs are analyzed to detect abnormal session reuse
+
+---
+
+### ⚡ Response
+When malicious SSH usage is detected, **Active Response** is triggered:
+
+- Terminate the active SSH session to the Server Farm
+- Disable or lock the compromised `jumpbox` user
+- Prevent further lateral movement
+- Generate alert for SOC investigation
+
+---
+
+### 🖼️ Demo: 
+[Watch Full Demo](https://drive.google.com/file/d/1Tfn4od8djykwGdD7UtQqqaeHDyJAMHyg/view?usp=sharing)

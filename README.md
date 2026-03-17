@@ -36,3 +36,44 @@ The goal is to simulate a **real-world SOC environment**, where attacks are dete
   - Remediation suggestions
 
 ---
+# 🚨 Attack Scenarios & Demonstration
+
+---
+
+## 🔴 Scenario 1: Reverse Shell Detection & Response
+
+### 🧪 Attack
+A malicious Python script simulating a **reverse shell** is executed on the endpoint.  
+The script initiates an outbound connection to the attacker's machine, allowing remote command execution and persistent access.
+
+---
+
+### 🔍 Detection
+- The `lsof-monitor` service detects new outbound network connections.
+- Logs are forwarded by **Wazuh Agent** to the **Wazuh Manager**.
+- Wazuh analyzes:
+  - Destination IP address
+  - Process information (PID, command line, user)
+- The connection is compared against a **blacklist of suspicious IPs**.
+- An alert is generated when a match or abnormal behavior is detected.
+
+---
+
+### ⚡ Response
+Once the alert is triggered, **Active Response** is executed automatically:
+
+- Analyze the suspicious process (PID, command line, user)
+- Check if the process originated from a USB device  
+  → If yes, block the device using USB control
+- Terminate the reverse shell process
+- Delete the malicious file from the system
+- Isolate the endpoint from the network for further investigation
+
+---
+
+### 🖼️ Demo
+
+**1. Reverse shell execution**
+```md
+[Watch Full Demo](https://drive.google.com/file/d/1HJznsLTW11QqCWwRigrPFWWUI_gj3wQs/view?usp=sharing)
+```

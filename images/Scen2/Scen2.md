@@ -2,6 +2,7 @@
 
 Execution steps:
 • Step 1: A normal user will establish an SSH connection to the Jump Box, followed by connecting to a machine in the Server Farm zone.
+
 ![Figure 4.7: Normal user connecting to the Server Farm](user_connect_ssh.png)
 
 • Step 2: After gaining control of the Jump Box, the attacker will be able to read the SSH_AUTH_SOCK environment variable whenever a user makes an SSH connection to the Server Farm zone.

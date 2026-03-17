@@ -73,7 +73,6 @@ Once the alert is triggered, **Active Response** is executed automatically:
 
 ### 🖼️ Demo
 
-**1. Reverse shell execution**
-```md
+**1. Reverse shell execution**: 
 [Watch Full Demo](https://drive.google.com/file/d/1HJznsLTW11QqCWwRigrPFWWUI_gj3wQs/view?usp=sharing)
-```
+
